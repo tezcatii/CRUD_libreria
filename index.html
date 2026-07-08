@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - App de Librería</title>
+    <style>
+        /* --- Variables de Estilo --- */
+        :root {
+            --bg-principal: #0f172a;
+            --bg-tarjeta: #1e293b;
+            --texto-primario: #f8fafc;
+            --texto-secundario: #94a3b8;
+            --color-acento: #38bdf8;
+            --color-acento-hover: #0ea5e9;
+            --color-exito: #4ade80;
+            --color-peligro: #f87171;
+            --borde: #334155;
+            --fuente: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* --- Reset y Estilos Globales --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-primario);
+            font-family: var(--fuente);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+
+
+        /* --- Contenedor Principal --- */
+        .container {
+            max-width: 1200px;
+            margin: 3.5rem auto;
+            padding: 0 1.5rem 40px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        .main-header {
+    position: relative;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-bottom: 1px solid var(--borde);
+    padding: 3.5rem 1.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.header-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(0,0,0,0) 70%);
+    pointer-events: none;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.header-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--texto-primario);
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #ffffff, var(--color-acento));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.header-content p {
+    font-size: 1rem;
+    color: var(--texto-secundario);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 4fr 7fr;
+            }
+        }
+
+        /* --- Componente Tarjeta (Formulario) --- */
+        .card {
+            background-color: var(--bg-tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            height: fit-content;
+        }
+
+        .card-header {
+            background-color: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* --- Formularios --- */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-principal);
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            color: var(--texto-primario);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-acento);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* --- Botones --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--color-acento);
+            color: var(--bg-principal);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-acento-hover);
+        }
+
+        /* Estas clases se usan dinámicamente en el JS cuando editas */
+        .btn-success {
+            background-color: var(--color-exito) !important;
+            color: var(--bg-principal) !important;
+        }
+
+        .btn-warning {
+            background-color: transparent;
+            border: 1px solid #eab308;
+            color: #eab308;
+        }
+
+        .btn-warning:hover {
+            background-color: #eab308;
+            color: var(--bg-principal);
+        }
+
+        .btn-danger {
+            background-color: transparent;
+            border: 1px solid var(--color-peligro);
+            color: var(--color-peligro);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--color-peligro);
+            color: var(--texto-primario);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.85rem;
+            width: auto;
+        }
+
+        /* --- Tablas --- */
+        .table-container {
+            background-color: var(--bg-tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            overflow-x: auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .table th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--texto-secundario);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--borde);
+            color: var(--texto-primario);
+            vertical-align: middle;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .text-center { text-align: center; }
+        .text-muted { color: var(--texto-secundario); }
+
+        .footer {
+    background-color: var(--bg-tarjeta);
+    border-top: 1px solid var(--borde);
+    padding: 1.5rem 2rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: var(--texto-secundario);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--color-acento);
+}
+
+    </style>
+
+</head>
+<body>
+<header class="main-header">
+    <div class="header-overlay"></div>
+    <div class="header-content">
+        <h1>Aplicación de Librería</h1>
+        <p>Gestión digital de inventario, títulos y precios en tiempo real</p>
+    </div>
+</header>
+<!--   Navegación 
+    <nav class="navbar">
+        <span class="navbar-brand">App de Librería</span>
+    </nav> -->
+
+    <!-- Contenedor Principal -->
+    <div class="container" id="body">
+        
+        <!-- Columna Formulario -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Agregar nuevo libro</h2>
+            </div>
+            <div class="card-body">
+                <form id="formulario">
+                    <div class="form-group">
+                        <input type="text" id="titulo" class="form-control" placeholder="Ingresar título">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="descripcion" class="form-control" placeholder="Ingresar descripción"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="precio" class="form-control" placeholder="Ingresar precio">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Columna Tabla -->
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  <!-- JS gestionará las filas aquí -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Tu archivo de JS -->
+    <script src="app.js"></script>
+    
+</body>
+<footer class="footer">
+    <div class="footer-content">
+        <p>App de Librería &bull; Sistema de Inventario v2.0</p> 
+        <div class="footer-links">
+            <a href="#">Términos</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Soporte</a>
+        </div>
+    </div>
+</footer>
+</html>
